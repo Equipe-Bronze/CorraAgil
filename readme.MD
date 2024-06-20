@@ -11,7 +11,7 @@ Como contribuir? 🦾🧠
 <ol>
 <li>Faça um Fork do Repositório</li>
 <li>Clone o projeto para o seu repositório local: <b>git clone link</b>.</li>
-<li>Adicione o repositório principal como um repositório remoto: <b>git remote add upstream https://github.com/jucaodamontanha/CorraAgil.git</b></li>
+<li>Adicione o repositório principal como um repositório remoto: <b>git remote add upstream https://github.com/Equipe-Bronze/CorraAgil.git</b></li>
 </ol>
 
 <h3>
