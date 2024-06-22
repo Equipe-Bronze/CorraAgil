@@ -1,6 +1,6 @@
-package br.com.pipocaagil.CorraAgil.Repository;
+package br.com.pipocaagil.CorraAgil.repository;
 
-import br.com.pipocaagil.CorraAgil.Model.CadastroModel;
+import br.com.pipocaagil.CorraAgil.model.CadastroModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
