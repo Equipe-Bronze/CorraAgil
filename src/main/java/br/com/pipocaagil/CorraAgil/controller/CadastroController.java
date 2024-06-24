@@ -35,9 +35,8 @@ public class CadastroController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CadastroModel> saveCadastro(@RequestBody @Valid CadastroDto cadastroDto) {
-        var CadastroModel = new CadastroModel();
-        return ResponseEntity.status(HttpStatus.CREATED).body(cadastroRepository.save(CadastroModel));
+    public ResponseEntity<CadastroModel> saveCadastro(@RequestBody @Valid CadastroModel createCadastro) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(services.create(createCadastro));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
