@@ -18,30 +18,28 @@ import java.util.Optional;
 @RequestMapping("/cadastro")
 public class CadastroController {
     @Autowired
-    CadastroRepository cadastroRepository;
-    @Autowired
     CadastroServices services;
 
     @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public CadastroModel findById(@PathVariable(value = "id") Long id) throws Exception {
+    public CadastroDto findById(@PathVariable(value = "id") Long id) throws Exception {
         return services.findById(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CadastroModel> findAll() {
+    public List<CadastroDto> findAll() {
         return services.findAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CadastroModel> saveCadastro(@RequestBody @Valid CadastroModel createCadastro) {
+    public ResponseEntity<CadastroDto> saveCadastro(@RequestBody @Valid CadastroDto createCadastro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(services.create(createCadastro));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public CadastroModel update(@RequestBody CadastroModel updateCadastro) {
+    public CadastroDto update(@RequestBody CadastroDto updateCadastro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(services.update(updateCadastro)).getBody();
     }
 

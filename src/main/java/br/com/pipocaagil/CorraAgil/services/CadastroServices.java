@@ -1,5 +1,7 @@
 package br.com.pipocaagil.CorraAgil.services;
 
+import br.com.pipocaagil.CorraAgil.DTO.CadastroDto;
+import br.com.pipocaagil.CorraAgil.mapper.DozerMapper;
 import br.com.pipocaagil.CorraAgil.model.CadastroModel;
 import br.com.pipocaagil.CorraAgil.repository.CadastroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,12 @@ public class CadastroServices {
      * @param id
      * @return
      */
-    public CadastroModel findById(Long id) {
+    public CadastroDto findById(Long id) {
         // Message Logger Spring Data
         logger.info("Procurando uma pessoa no cadastro");
 
-        return cadastroRepository.findById(id).orElseThrow();
+        CadastroModel entityModel = cadastroRepository.findById(id).orElseThrow();
+        return DozerMapper.parserObject(entityModel, CadastroDto.class);
     }
 
     /**
@@ -33,43 +36,45 @@ public class CadastroServices {
      *
      * @return
      */
-    public List<CadastroModel> findAll() {
+    public List<CadastroDto> findAll() {
         // Message Logger Spring Data
         logger.info("Procurando todas pessoa da lista de cadastro");
 
-        return cadastroRepository.findAll();
+        return DozerMapper.parserListObject(cadastroRepository.findAll(), CadastroDto.class);
     }
 
     /**
      * Method to create new cadastro
      *
-     * @param addCadastro
+     * @param addCadastroDTO
      * @return
      */
-    public CadastroModel create(CadastroModel addCadastro) {
+    public CadastroDto create(CadastroDto addCadastroDTO) {
         // Message Logger Spring Data
         logger.info("Creiando uma pessoa na lista de cadastro!");
+        CadastroModel entityModel = DozerMapper.parserObject(addCadastroDTO, CadastroModel.class);
+        CadastroDto entityDTO = DozerMapper.parserObject(cadastroRepository.save(entityModel), CadastroDto.class);
 
-        return cadastroRepository.save(addCadastro);
+        return entityDTO;
     }
 
     /**
      * Method to update cadastro
      *
-     * @param updateCadastro
+     * @param updateCadastroDTO
      * @return
      */
-    public CadastroModel update(CadastroModel updateCadastro) {
+    public CadastroDto update(CadastroDto updateCadastroDTO) {
         // Message Logger Spring Data
         logger.info("Atualiznado uma pessoa na lista de cadastro");
 
-        CadastroModel auxUpdateCadastroModel = cadastroRepository.findById(updateCadastro.getId()).orElseThrow();
+        CadastroModel entityUpdateCadastroModel = cadastroRepository.findById(updateCadastroDTO.getId()).orElseThrow();
 
-        auxUpdateCadastroModel.setEmail(updateCadastro.getEmail());
-        auxUpdateCadastroModel.setNomecompleto(updateCadastro.getNomecompleto());
-        auxUpdateCadastroModel.setSenha(updateCadastro.getSenha());
+        entityUpdateCadastroModel.setEmail(updateCadastroDTO.getEmail());
+        entityUpdateCadastroModel.setNomecompleto(updateCadastroDTO.getNomecompleto());
+        entityUpdateCadastroModel.setSenha(updateCadastroDTO.getSenha());
 
-        return cadastroRepository.save(updateCadastro);
+        return DozerMapper.parserObject(cadastroRepository.save(entityUpdateCadastroModel), CadastroDto.class);
     }
 
     /**
