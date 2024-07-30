@@ -2,28 +2,25 @@ package br.com.pipocaagil.CorraAgil.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name ="Cadastro")
+@Table(name = "corragil")
 public class CadastroModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "nomecompleto")
     private String nomecompleto;
 
     @Column(unique = true)
-    private String email;
     @Email
+    private String email;
+
+    @Column(name = "senha")
     @Length(min = 8)
     private String senha;
 
@@ -32,7 +29,7 @@ public class CadastroModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CadastroModel that = (CadastroModel) o;
-        return Objects.equals(id, that.id) && Objects.equals(nomecompleto, that.nomecompleto) && Objects.equals(email, that.email) && Objects.equals(senha, that.senha);
+        return id.equals(that.id) && nomecompleto.equals(that.nomecompleto) && email.equals(that.email) && senha.equals(that.senha);
     }
 
     @Override
@@ -42,6 +39,10 @@ public class CadastroModel {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNomecompleto() {
