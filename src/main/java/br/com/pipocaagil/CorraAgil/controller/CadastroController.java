@@ -1,8 +1,6 @@
 package br.com.pipocaagil.CorraAgil.controller;
 
 import br.com.pipocaagil.CorraAgil.DTO.CadastroDto;
-import br.com.pipocaagil.CorraAgil.model.CadastroModel;
-import br.com.pipocaagil.CorraAgil.repository.CadastroRepository;
 import br.com.pipocaagil.CorraAgil.services.CadastroServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/cadastro")
+@RequestMapping("/api/corragil/v1")
 public class CadastroController {
     @Autowired
     CadastroServices services;
@@ -37,7 +34,8 @@ public class CadastroController {
         return ResponseEntity.status(HttpStatus.CREATED).body(services.create(createCadastro));
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public CadastroDto update(@RequestBody CadastroDto updateCadastro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(services.update(updateCadastro)).getBody();

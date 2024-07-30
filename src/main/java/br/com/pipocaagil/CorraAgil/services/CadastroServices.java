@@ -8,12 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class CadastroServices {
-    private Logger logger = Logger.getLogger(CadastroServices.class.getName());
-
     @Autowired
     CadastroRepository cadastroRepository;
 
@@ -24,8 +21,6 @@ public class CadastroServices {
      * @return
      */
     public CadastroDto findById(Long id) {
-        // Message Logger Spring Data
-        logger.info("Procurando uma pessoa no cadastro");
 
         CadastroModel entityModel = cadastroRepository.findById(id).orElseThrow();
         return DozerMapper.parserObject(entityModel, CadastroDto.class);
@@ -37,9 +32,6 @@ public class CadastroServices {
      * @return
      */
     public List<CadastroDto> findAll() {
-        // Message Logger Spring Data
-        logger.info("Procurando todas pessoa da lista de cadastro");
-
         return DozerMapper.parserListObject(cadastroRepository.findAll(), CadastroDto.class);
     }
 
@@ -50,8 +42,6 @@ public class CadastroServices {
      * @return
      */
     public CadastroDto create(CadastroDto addCadastroDTO) {
-        // Message Logger Spring Data
-        logger.info("Creiando uma pessoa na lista de cadastro!");
         CadastroModel entityModel = DozerMapper.parserObject(addCadastroDTO, CadastroModel.class);
         CadastroDto entityDTO = DozerMapper.parserObject(cadastroRepository.save(entityModel), CadastroDto.class);
 
@@ -65,8 +55,6 @@ public class CadastroServices {
      * @return
      */
     public CadastroDto update(CadastroDto updateCadastroDTO) {
-        // Message Logger Spring Data
-        logger.info("Atualiznado uma pessoa na lista de cadastro");
 
         CadastroModel entityUpdateCadastroModel = cadastroRepository.findById(updateCadastroDTO.getId()).orElseThrow();
 
@@ -83,7 +71,6 @@ public class CadastroServices {
      * @param deleteCadastro
      */
     public void delete(Long deleteCadastro) {
-        logger.info("Deletando uma pessoa na lista de cadastro");
         CadastroModel auxDeleteCadastro = cadastroRepository.findById(deleteCadastro).orElseThrow();
 
         cadastroRepository.delete(auxDeleteCadastro);
