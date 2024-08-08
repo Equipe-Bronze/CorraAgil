@@ -1,6 +1,6 @@
 package br.com.pipocaagil.CorraAgil.controller;
 
-import br.com.pipocaagil.CorraAgil.DTO.CadastroDto;
+import br.com.pipocaagil.CorraAgil.DTO.CadastroDTO;
 import br.com.pipocaagil.CorraAgil.services.CadastroServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +19,25 @@ public class CadastroController {
 
     @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public CadastroDto findById(@PathVariable(value = "id") Long id) throws Exception {
+    public CadastroDTO findById(@PathVariable(value = "id") Long id) throws Exception {
         return services.findById(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CadastroDto> findAll() {
+    public List<CadastroDTO> findAll() {
         return services.findAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CadastroDto> saveCadastro(@RequestBody @Valid CadastroDto createCadastro) {
+    public ResponseEntity<CadastroDTO> saveCadastro(@Valid @RequestBody CadastroDTO createCadastro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(services.create(createCadastro));
     }
 
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public CadastroDto update(@RequestBody CadastroDto updateCadastro) {
+    public CadastroDTO update(@Valid @RequestBody CadastroDTO updateCadastro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(services.update(updateCadastro)).getBody();
     }
 

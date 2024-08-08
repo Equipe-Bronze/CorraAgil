@@ -1,9 +1,10 @@
 package br.com.pipocaagil.CorraAgil.services;
 
-import br.com.pipocaagil.CorraAgil.DTO.CadastroDto;
+import br.com.pipocaagil.CorraAgil.DTO.CadastroDTO;
 import br.com.pipocaagil.CorraAgil.mapper.DozerMapper;
 import br.com.pipocaagil.CorraAgil.model.CadastroModel;
 import br.com.pipocaagil.CorraAgil.repository.CadastroRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,10 @@ public class CadastroServices {
      * @param id
      * @return
      */
-    public CadastroDto findById(Long id) {
+    public CadastroDTO findById(Long id) {
 
         CadastroModel entityModel = cadastroRepository.findById(id).orElseThrow();
-        return DozerMapper.parserObject(entityModel, CadastroDto.class);
+        return DozerMapper.parserObject(entityModel, CadastroDTO.class);
     }
 
     /**
@@ -31,8 +32,8 @@ public class CadastroServices {
      *
      * @return
      */
-    public List<CadastroDto> findAll() {
-        return DozerMapper.parserListObject(cadastroRepository.findAll(), CadastroDto.class);
+    public List<CadastroDTO> findAll() {
+        return DozerMapper.parserListObject(cadastroRepository.findAll(), CadastroDTO.class);
     }
 
     /**
@@ -41,9 +42,9 @@ public class CadastroServices {
      * @param addCadastroDTO
      * @return
      */
-    public CadastroDto create(CadastroDto addCadastroDTO) {
+    public CadastroDTO create(@Valid CadastroDTO addCadastroDTO) {
         CadastroModel entityModel = DozerMapper.parserObject(addCadastroDTO, CadastroModel.class);
-        CadastroDto entityDTO = DozerMapper.parserObject(cadastroRepository.save(entityModel), CadastroDto.class);
+        CadastroDTO entityDTO = DozerMapper.parserObject(cadastroRepository.save(entityModel), CadastroDTO.class);
 
         return entityDTO;
     }
@@ -54,7 +55,7 @@ public class CadastroServices {
      * @param updateCadastroDTO
      * @return
      */
-    public CadastroDto update(CadastroDto updateCadastroDTO) {
+    public CadastroDTO update(@Valid CadastroDTO updateCadastroDTO) {
 
         CadastroModel entityUpdateCadastroModel = cadastroRepository.findById(updateCadastroDTO.getId()).orElseThrow();
 
@@ -62,7 +63,7 @@ public class CadastroServices {
         entityUpdateCadastroModel.setNomecompleto(updateCadastroDTO.getNomecompleto());
         entityUpdateCadastroModel.setSenha(updateCadastroDTO.getSenha());
 
-        return DozerMapper.parserObject(cadastroRepository.save(entityUpdateCadastroModel), CadastroDto.class);
+        return DozerMapper.parserObject(cadastroRepository.save(entityUpdateCadastroModel), CadastroDTO.class);
     }
 
     /**
