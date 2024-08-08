@@ -2,7 +2,7 @@ package br.com.pipocaagil.CorraAgil.DTO;
 
 import java.util.Objects;
 
-public class CadastroDto {
+public class CadastroDTO {
     private Long id;
     private String nomecompleto;
     private String email;
@@ -12,7 +12,7 @@ public class CadastroDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CadastroDto that = (CadastroDto) o;
+        CadastroDTO that = (CadastroDTO) o;
         return id.equals(that.id) && nomecompleto.equals(that.nomecompleto) && email.equals(that.email) && senha.equals(that.senha);
     }
 
