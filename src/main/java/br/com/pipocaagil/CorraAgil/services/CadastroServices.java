@@ -3,7 +3,7 @@ package br.com.pipocaagil.CorraAgil.services;
 import br.com.pipocaagil.CorraAgil.DTO.CadastroDTO;
 import br.com.pipocaagil.CorraAgil.mapper.DozerMapper;
 import br.com.pipocaagil.CorraAgil.model.CadastroModel;
-import br.com.pipocaagil.CorraAgil.repository.CadastroRepository;
+import br.com.pipocaagil.CorraAgil.repositories.CadastroRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
