@@ -9,3 +9,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+api:
+  security:
+    token:
+      secret: my-secret-key
