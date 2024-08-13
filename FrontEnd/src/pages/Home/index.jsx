@@ -1,9 +1,15 @@
-import { BackHome, BottonPriority, Container, HomeAccess, LinkPriority, StartButton, Title, TopHome } from './styles'
+import { useNavigate } from 'react-router-dom'
+
+import { BackHome, BottonPriority, Container, HomeAccess, LinkPriority, Title, TopHome } from './styles'
+
+import Button from '../../components/Button'
 
 import ImageBackground from '../../assets/home-CorraAgil.svg'
 import Logo from '../../assets/corraAgil.png'
 
 function Home() {
+
+  const navigate = useNavigate()
 
   return (
     <Container>
@@ -24,7 +30,7 @@ function Home() {
 
         <Title>Faça login e comece sua corrida!</Title>
 
-        <StartButton>COMEÇAR</StartButton>
+        <Button theme="primary" onClick={() => navigate('/login')}>COMEÇAR</Button>
 
         <BottonPriority>Para proteger sua privacidade e garantir a segurança de suas informações pessoais, ao continuar, você concorda com a:</BottonPriority>
 

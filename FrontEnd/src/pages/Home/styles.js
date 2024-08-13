@@ -57,32 +57,11 @@ export const Title = styled.h1`
     margin: 36px 0 40px 0;
 `
 
-export const StartButton = styled.button`
-    color: #000;
-    background: #fff;
-    border: none;
-    height: 56px;
-    width: 372px;
-    border-radius: 20px;
-    margin-bottom: 40px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    
-    &:hover{
-        opacity: 0.8;
-    }
-
-    &:active{
-        opacity: 0.5;
-    }
-`
-
 export const BottonPriority = styled.h4`
     font-size: 12px;
     width: 335px;
     text-align: center;
-    margin-bottom: 8px;
+    margin: 40px 0 8px;
 `
 
 export const LinkPriority = styled.a`
