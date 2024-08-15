@@ -58,11 +58,13 @@ export const Title = styled.h1`
 
 
 
+
+
 export const BottonPriority = styled.h4`
     font-size: 12px;
     width: 335px;
     text-align: center;
-    margin-bottom: 8px;
+    margin: 40px 0 8px;
 `
 
 export const LinkPriority = styled.a`
