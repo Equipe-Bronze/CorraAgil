@@ -5,14 +5,14 @@ import {
   Container,
   HomeAccess,
   LinkPriority,
-  StartButton,
   Title,
   TopHome,
 } from "./styles";
 
 import ImageBackground from "../../assets/home-CorraAgil.svg";
 import Logo from "../../assets/corraAgil.png";
-import UserRegistration from "../UserRegistration";
+import { Button } from "../../components/button";
+import { Link } from "react-router-dom";
 
 function Home() {
 
@@ -40,14 +40,18 @@ function Home() {
         <BackHome>
           <img src={Logo} alt="Logo CorraAgil" />
 
-          <UserRegistration />
-
           <h2>Pronto para acelerar?</h2>
         </BackHome>
 
         <Title>Faça login e comece sua corrida!</Title>
 
+
+        <Button>
+          <Link to={"/cadastro-usuarios"}>COMEÇAR</Link>
+        </Button>
+
         <Button theme="primary" onClick={() => navigate('/login')}>COMEÇAR</Button>
+
 
         <BottonPriority>
           Para proteger sua privacidade e garantir a segurança de suas

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+color: #ffff;
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -12,17 +13,15 @@ export const HomeAccess = styled.div`
     background-color: #12263A;
     height: 932px;
     width: 430px;
-
     display: flex;
     align-items: center; 
-    justify-content: center;
+   justify-content:center;
     flex-direction: column;
 `
 
 export const TopHome = styled.div`
     height: 559px;
     width: 430px;
-
     position: relative;
 
     img{
@@ -56,6 +55,10 @@ export const Title = styled.h1`
     text-align: center;
     margin: 36px 0 40px 0;
 `
+
+
+
+
 
 export const BottonPriority = styled.h4`
     font-size: 12px;

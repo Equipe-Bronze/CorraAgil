@@ -21,7 +21,7 @@ export const Input = styled.div`
     }
 
     &:placeholder-shown {
-      opacity: 0.5;
+      color: rgb(0,0,0,50%);
       background-color: #ffffff;
       text-align: center;
     }
