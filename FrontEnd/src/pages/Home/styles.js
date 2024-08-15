@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+color: #ffff;
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -57,26 +58,7 @@ export const Title = styled.h1`
     margin: 36px 0 40px 0;
 `
 
-export const StartButton = styled.button`
-    color: #000;
-    background: #fff;
-    border: none;
-    height: 56px;
-    width: 372px;
-    border-radius: 20px;
-    margin-bottom: 40px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    
-    &:hover{
-        opacity: 0.8;
-    }
 
-    &:active{
-        opacity: 0.5;
-    }
-`
 
 export const BottonPriority = styled.h4`
     font-size: 12px;
