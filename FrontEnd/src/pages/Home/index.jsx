@@ -30,7 +30,7 @@ function Home() {
         <Title>Faça login e comece sua corrida!</Title>
 
         <Button>
-          <Link to={"/login"}>COMEÇAR</Link>
+          <Link to={"/cadastro-usuarios"}>COMEÇAR</Link>
         </Button>
 
         <BottonPriority>

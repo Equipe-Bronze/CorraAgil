@@ -13,17 +13,15 @@ export const HomeAccess = styled.div`
     background-color: #12263A;
     height: 932px;
     width: 430px;
-
     display: flex;
     align-items: center; 
-    justify-content: center;
+   justify-content:center;
     flex-direction: column;
 `
 
 export const TopHome = styled.div`
     height: 559px;
     width: 430px;
-
     position: relative;
 
     img{
