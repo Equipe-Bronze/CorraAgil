@@ -4,11 +4,11 @@ spring:
     url: jdbc:mysql://localhost:3306/corragil?useTimezone=true&serverTimezone=UTC
     username: root
     password: 753951
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: none
-    show-sql: false
+#  jpa:
+#    open-in-view: false
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: false
 api:
   security:
     token:
