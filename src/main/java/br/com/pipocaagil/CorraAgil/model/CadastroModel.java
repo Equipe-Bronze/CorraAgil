@@ -1,53 +1,38 @@
 package br.com.pipocaagil.CorraAgil.model;
 
+import br.com.pipocaagil.CorraAgil.DTO.DadosCadastroDTO;
+import br.com.pipocaagil.CorraAgil.DTO.DadosToUpdateCadastroDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
+import lombok.*;
 
-import java.util.Objects;
-
-@Entity
+@Entity(name = "Corragil")
 @Table(name = "corragil")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class CadastroModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "nomecompleto")
-    @NotBlank
-    @Pattern(regexp = "^[A-Z]+(.)*")
     private String nomecompleto;
-
-    @Column(unique = true)
-    @Email
-    @NotBlank
     private String email;
-
-    @Column(name = "senha")
-    @Length(min = 8)
-    @NotBlank
     private String senha;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CadastroModel that = (CadastroModel) o;
-        return id.equals(that.id) && nomecompleto.equals(that.nomecompleto) && email.equals(that.email) && senha.equals(that.senha);
+    public CadastroModel(DadosCadastroDTO createCadastroDTO) {
+        this.nomecompleto = createCadastroDTO.nomecompleto();
+        this.email = createCadastroDTO.email();
+        this.senha = createCadastroDTO.senha();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nomecompleto, email, senha);
+    public void updateDadosPacientes(DadosToUpdateCadastroDTO updateCadastro) {
+        if (updateCadastro.nomecompleto() != null) {
+            this.nomecompleto = updateCadastro.nomecompleto();
+        }
+
+        if (updateCadastro.senha() != null) {
+            this.senha = updateCadastro.senha();
+        }
     }
 }

@@ -29,6 +29,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/corragil/v1/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/corragil/v1/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/corragil/v1").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/corragil/v1").permitAll()
+                        .requestMatchers(HttpMethod.PUT,"/api/corragil/v1").permitAll()
+                        .requestMatchers(HttpMethod.DELETE,"/api/corragil/v1/{id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
