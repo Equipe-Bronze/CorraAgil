@@ -36,6 +36,15 @@ public class CadastroController {
         return ResponseEntity.ok(pageList);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        // Criando busca por id da variável do objeto de referência da entidade
+        CadastroModel entityById = repository.getReferenceById(id);
+
+        // Return HttpStatus 200
+        return ResponseEntity.ok(new ResponseBodyStatusCadastroDTO(entityById));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
