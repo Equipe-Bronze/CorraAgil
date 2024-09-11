@@ -8,7 +8,7 @@ public record DadosCadastroDTO(
         String nomecompleto,
         @Email
         @NotBlank
-        String email,
+        String login,
         @NotBlank
         String senha) {
 }

@@ -1,6 +1,6 @@
 package br.com.pipocaagil.CorraAgil.infra.security;
 
-import br.com.pipocaagil.CorraAgil.model.CadastroModel;
+import br.com.pipocaagil.CorraAgil.domain.UsuarioModel;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -17,23 +17,28 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(CadastroModel userGenerateToken) {
+    public String generateToken(UsuarioModel usuarioModel) {
         try {
             // Algoritmo de criptografia para utilizar
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             // Criação do Token
-            String token = JWT.create()
-                    .withIssuer("CorraAgil")
-                    .withSubject(userGenerateToken.getEmail())
-                    .withExpiresAt(this.generateExpirationDate())
+            return JWT.create()
+                    .withIssuer("API Pipoca Agil")
+                    .withSubject(usuarioModel.getLogin()) // Subject 'getLogin()' para validar de acordo com 'SecurityFilter'
+                    .withExpiresAt(this.generateExpirationDate()) // Tempo de Validade
                     .sign(algorithm);
-            return token;
-        } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao autenticar!");
+        } catch (JWTCreationException e) {
+            throw new RuntimeException("Erro ao autenticar!", e);
         }
     }
 
+    /**
+     * Método para executar a lógica da validação do 'withSubject()' o login e validar o token
+     *
+     * @param validateToken
+     * @return
+     */
     public String validateToken(String validateToken) {
         try {
             // Algoritmo de criptografia para utilizar
@@ -41,15 +46,20 @@ public class TokenService {
 
             // Realiza a verificação do token "generateToken()" e valida
             return JWT.require(algorithm)
-                    .withIssuer("CorraAgil")
+                    .withIssuer("API Pipoca Agil")
                     .build()
                     .verify(validateToken)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            return null;
+            throw new RuntimeException("Token JWT inválido ou expirado!");
         }
     }
 
+    /**
+     * Método configurado para Token de Expeiração em 2h
+     *
+     * @return
+     */
     private Instant generateExpirationDate() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }

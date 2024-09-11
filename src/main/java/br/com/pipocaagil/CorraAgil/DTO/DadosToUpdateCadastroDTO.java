@@ -1,8 +1,5 @@
 package br.com.pipocaagil.CorraAgil.DTO;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record DadosToUpdateCadastroDTO(
@@ -12,6 +9,7 @@ public record DadosToUpdateCadastroDTO(
 //        @NotEmpty
 //        @NotBlank
         String nomecompleto,
+        String login,
 //        @NotNull
 //        @NotEmpty
 //        @NotBlank

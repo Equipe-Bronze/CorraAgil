@@ -1,4 +1,4 @@
-package br.com.pipocaagil.CorraAgil.model;
+package br.com.pipocaagil.CorraAgil.domain;
 
 import br.com.pipocaagil.CorraAgil.DTO.DadosCadastroDTO;
 import br.com.pipocaagil.CorraAgil.DTO.DadosToUpdateCadastroDTO;
@@ -22,7 +22,7 @@ public class CadastroModel {
 
     public CadastroModel(DadosCadastroDTO createCadastroDTO) {
         this.nomecompleto = createCadastroDTO.nomecompleto();
-        this.email = createCadastroDTO.email();
+        this.email = createCadastroDTO.login();
         this.senha = createCadastroDTO.senha();
     }
 
