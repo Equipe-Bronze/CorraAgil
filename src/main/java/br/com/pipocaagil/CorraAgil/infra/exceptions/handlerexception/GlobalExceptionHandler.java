@@ -1,6 +1,7 @@
 package br.com.pipocaagil.CorraAgil.infra.exceptions.handlerexception;
 
 import br.com.pipocaagil.CorraAgil.infra.exceptions.EntityErrorResponse;
+import br.com.pipocaagil.CorraAgil.infra.exceptions.ValidacaoException;
 import br.com.pipocaagil.CorraAgil.infra.exceptions.ValidationError;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -157,5 +158,10 @@ public class GlobalExceptionHandler {
             HttpStatus httpStatus,
             WebRequest request) {
         return buildErrorResponse(ex, ex.getMessage(), httpStatus, request);
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity tratarErroValidacao(ValidacaoException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

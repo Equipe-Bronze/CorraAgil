@@ -37,7 +37,8 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/api/corragil/v1/login").permitAll()
-                            .requestMatchers("/api/corragil/v1/register").permitAll();
+                            .requestMatchers("/api/corragil/v1/register").permitAll()
+                            .requestMatchers("v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
