@@ -7,8 +7,10 @@ import br.com.pipocaagil.CorraAgil.DTO.ResponseBodyStatusCadastroDTO;
 import br.com.pipocaagil.CorraAgil.domain.UsuarioModel;
 import br.com.pipocaagil.CorraAgil.DTO.DadosLoginRequestDTO;
 import br.com.pipocaagil.CorraAgil.infra.DadosTokenJWTDTO;
+import br.com.pipocaagil.CorraAgil.infra.exceptions.ValidacaoException;
 import br.com.pipocaagil.CorraAgil.infra.security.TokenService;
 import br.com.pipocaagil.CorraAgil.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,7 +40,12 @@ public class AutenticationController {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Page<DadosCadastroListDTO>> findAll(@PageableDefault(size = 10) Pageable paginacao) {
         // Adaptando Page List de todos os cadastro
         var pageList = repository.findAll(paginacao).map(DadosCadastroListDTO::new);
@@ -48,6 +56,7 @@ public class AutenticationController {
 
     @GetMapping(value = "/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         // Criando busca por id da variável do objeto de referência da entidade
         UsuarioModel entityById = repository.getReferenceById(id);
@@ -59,10 +68,19 @@ public class AutenticationController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> createCadastro(@RequestBody @Valid DadosCadastroDTO createCadastro,
                                             UriComponentsBuilder uriComponentsBuilder) {
+
         // Criando variável de um novo cadastro do object reference(UsuarioLogin), nova entidade no DB
-        UsuarioModel entityModel = repository.save(new UsuarioModel(createCadastro));
+        var entityModel = new UsuarioModel(createCadastro);
+
+        // Criando senha BCrypt para POST de novo usuários
+        var senhaBCrypt = passwordEncoder.encode(createCadastro.senha());
+        entityModel.setSenha(senhaBCrypt);
+
+        // Salvando em DB dados
+        repository.save(entityModel);
 
         // Variável URI encapsulada com Location('endereço ou Header') para FrontEnd
         var uri = uriComponentsBuilder.path("/api/corragil/v1/{id}").buildAndExpand(entityModel.getId()).toUri();
@@ -75,6 +93,7 @@ public class AutenticationController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> update(@RequestBody @Valid DadosToUpdateCadastroDTO updateCadastro) {
         // Criando variável da entidade por busca do id deo objeto de referência
         UsuarioModel entityModel = repository.getReferenceById(updateCadastro.id());
@@ -87,6 +106,7 @@ public class AutenticationController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         // Criando busca por id da variável do objeto de referência da entidade
         UsuarioModel entityDelete = repository.findById(id).orElseThrow();
@@ -115,40 +135,61 @@ public class AutenticationController {
         return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
     }
 
+//    @PostMapping(value = "/register",
+//            consumes = MediaType.APPLICATION_JSON_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> register(@RequestBody @Valid DadosCadastroDTO dadosRegisterRequestDTO) {
+//
+//        // Verificação se o email (login) está cadastrado
+//        Optional<UserDetails> entityModel = Optional.ofNullable(repository.findByLogin(dadosRegisterRequestDTO.login()));
+//
+//        if (entityModel.isEmpty()) {
+//            System.out.println(entityModel);
+//            // Novo Usuário
+//            UsuarioModel newEntity = new UsuarioModel();
+//
+//            // Hash da senha usando BCryptPasswordEncoder
+//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//            String encodedPassword = passwordEncoder.encode(dadosRegisterRequestDTO.senha());
+//
+//            newEntity.setSenha(encodedPassword);
+//            newEntity.setLogin(dadosRegisterRequestDTO.login()); // Presumindo que o login é o email
+//            newEntity.setNomecompleto(dadosRegisterRequestDTO.nomecompleto());
+//
+//            // Salvar novo usuário no banco de dados
+//            repository.save(newEntity);
+//
+//            // Opcionalmente, gerar um token JWT após o registro, se necessário
+//            String tokenJWT = tokenService.generateToken(newEntity);
+//
+//            // Retornar o token JWT
+//            return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
+//        } else {
+//            // Retornar uma resposta indicando que o usuário já está registrado
+//            return ResponseEntity.status(HttpStatus.CONFLICT)
+//                    .body("Usuário já está registrado com este login.");
+//        }
+//    }
+
     @PostMapping(value = "/register",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> register(@RequestBody @Valid DadosCadastroDTO dadosRegisterRequestDTO) {
+    public ResponseEntity<?> register(@RequestBody @Valid DadosCadastroDTO dadosRegisterRequestDTO) throws ValidacaoException {
+        Optional<UserDetails> emailJaCadastrado = Optional.ofNullable(repository.findByLogin(dadosRegisterRequestDTO.login()));
 
-        // Verificação se o email (login) está cadastrado
-        Optional<UserDetails> entityModel = Optional.ofNullable(repository.findByLogin(dadosRegisterRequestDTO.login()));
-        System.out.println(entityModel);
-
-        if (entityModel.isEmpty()) {
-            System.out.println(entityModel);
-            // Novo Usuário
-            UsuarioModel newEntity = new UsuarioModel();
-
-            // Hash da senha usando BCryptPasswordEncoder
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(dadosRegisterRequestDTO.senha());
-
-            newEntity.setSenha(encodedPassword);
-            newEntity.setLogin(dadosRegisterRequestDTO.login()); // Presumindo que o login é o email
-            newEntity.setNomecompleto(dadosRegisterRequestDTO.nomecompleto());
-
-            // Salvar novo usuário no banco de dados
-            repository.save(newEntity);
-
-            // Opcionalmente, gerar um token JWT após o registro, se necessário
-            String tokenJWT = tokenService.generateToken(newEntity);
-
-            // Retornar o token JWT
-            return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
-        } else {
-            // Retornar uma resposta indicando que o usuário já está registrado
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Usuário já está registrado com este login.");
+        if (emailJaCadastrado.equals(repository.findByLogin(dadosRegisterRequestDTO.login()))) {
+            throw new ValidacaoException("Email já cadastrado para outro usuário!");
         }
+
+        var senhaBCrypt = passwordEncoder.encode(dadosRegisterRequestDTO.senha());
+
+        //setar os dados via construtor ou via metodos setters:
+        var usuario = new UsuarioModel(dadosRegisterRequestDTO, senhaBCrypt);
+        System.out.println(usuario);
+
+        this.repository.save(usuario);
+
+        // Return HttpStatus 200 com dados criado no DB para o Header
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyStatusCadastroDTO(usuario));
     }
 }

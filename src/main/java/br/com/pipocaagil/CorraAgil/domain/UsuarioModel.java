@@ -33,6 +33,13 @@ public class UsuarioModel implements UserDetails {
         this.senha = createCadastroDTO.senha();
     }
 
+    public UsuarioModel(DadosCadastroDTO dadosRegisterRequestDTO, String senhaBCrypt) {
+        this.nomecompleto = dadosRegisterRequestDTO.nomecompleto();
+        this.login = dadosRegisterRequestDTO.login();
+        this.senha = senhaBCrypt;
+
+    }
+
     public void updateDadosPacientes(DadosToUpdateCadastroDTO updateCadastro) {
         if (updateCadastro.nomecompleto() != null) {
             this.nomecompleto = updateCadastro.nomecompleto();
