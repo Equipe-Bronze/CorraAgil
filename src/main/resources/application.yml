@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/corragil?useTimezone=true&serverTimezone=UTC
     username: root
-    password: root1234
+    password: 753951
   jpa:
     open-in-view: false
     #    hibernate:
