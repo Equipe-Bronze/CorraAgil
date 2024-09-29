@@ -1,13 +1,12 @@
-FROM openjdk:17-jdk-alpine
 
-WORKDIR /app
+FROM ubuntu:latest AS build
 
-COPY pom.xml pom.xml
-RUN mvn dependency:go-offline
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk maven
 
-COPY src src
-RUN mvn package
+COPY . .
 
+RUN mvn clean install
+
+FROM openjdk:17-jdk-slim
 EXPOSE 8080
-
-ENTRYPOINT ["java","-jar",target/CorraAgil-0.0.1-SNAPSHOT.jar]
