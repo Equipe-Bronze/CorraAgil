@@ -1,11 +1,18 @@
-# Use a imagem base do OpenJDK 17
+FROM ubuntu:latest AS build
+
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk maven
+
+COPY . .
+
+RUN mvn clean install
+
 FROM openjdk:17-jdk-slim
-
-# Adicione o jar do aplicativo ao container
-COPY target/CorraAgil-0.0.1-SNAPSHOT.jar.original /app.jar
-
-# Exponha a porta que seu aplicativo usa
 EXPOSE 8080
+
+# Copiar o arquivo JAR gerado para a imagem final
+COPY --from=build target/CorraAgil-0.0.1-SNAPSHOT.jar /app.jar
 
 # Comando para rodar o aplicativo
 ENTRYPOINT ["java", "-jar", "/app.jar"]
+
