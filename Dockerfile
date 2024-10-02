@@ -11,7 +11,7 @@ FROM openjdk:17-jdk-slim
 EXPOSE 8080
 
 # Copiar o arquivo JAR gerado para a imagem final
-COPY --from=build target/CorraAgil-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=build /Users/lineker/Documents/Projetos/CorraAgil/target/CorraAgil-0.0.1-SNAPSHOT.jar /app.jar
 
 # Comando para rodar o aplicativo
 ENTRYPOINT ["java", "-jar", "/app.jar"]
