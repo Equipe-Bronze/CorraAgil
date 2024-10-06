@@ -1,5 +1,6 @@
 package br.com.pipocaagil.CorraAgil.DTO;
 
+
 import br.com.pipocaagil.CorraAgil.domain.UsuarioModel;
 
 public record DadosCadastroListDTO(
