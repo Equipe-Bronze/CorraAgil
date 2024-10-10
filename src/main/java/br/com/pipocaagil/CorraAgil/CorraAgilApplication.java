@@ -7,6 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CorraAgilApplication {
     public static void main(String[] args) {
         SpringApplication.run(CorraAgilApplication.class, args);
-        System.out.println("teste");
     }
 }

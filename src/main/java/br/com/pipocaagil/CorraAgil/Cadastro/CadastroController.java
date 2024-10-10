@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cadastro")
+@RequestMapping("/home")
 public class CadastroController {
 
     private CadastroService cadastroService;
 
-    @GetMapping
+    @GetMapping("/todos")
     public List<CadastroModel> getAllCadastroModel(){
         return cadastroService.listarTodos();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public Optional<CadastroModel> buscar (@PathVariable Long id){
         return cadastroService.buscar(id);
     }
