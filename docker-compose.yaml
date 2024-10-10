@@ -19,7 +19,7 @@ services:
     image: "mysql:8.0"
     restart: always
     ports:
-      - 3307:3306
+      - 3307:3307
     networks:
       - springapimysql-net
     environment:
