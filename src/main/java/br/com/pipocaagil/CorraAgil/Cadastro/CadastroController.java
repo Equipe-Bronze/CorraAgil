@@ -10,15 +10,17 @@ import java.util.Optional;
 public class CadastroController {
 
     private CadastroService cadastroService;
+
     @GetMapping
     public List<CadastroModel> getAllCadastroModel(){
         return cadastroService.listarTodos();
     }
+
     @GetMapping
     public Optional<CadastroModel> buscar (@PathVariable Long id){
         return cadastroService.buscar(id);
     }
-    PostMapping
+    @PostMapping("/cadastro")
     public CadastroModel createCadastroModel(@RequestBody CadastroModel cadastroModel){
         return cadastroService.salvar(cadastroModel);
     }
