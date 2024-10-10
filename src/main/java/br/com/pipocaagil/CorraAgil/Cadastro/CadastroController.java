@@ -14,9 +14,11 @@ public class CadastroController {
     public List<CadastroModel> getAllCadastroModel(){
         return cadastroService.listarTodos();
     }
+    @GetMapping
     public Optional<CadastroModel> buscar (@PathVariable Long id){
         return cadastroService.buscar(id);
     }
+    PostMapping
     public CadastroModel createCadastroModel(@RequestBody CadastroModel cadastroModel){
         return cadastroService.salvar(cadastroModel);
     }
@@ -28,6 +30,7 @@ public class CadastroController {
     public void deletarCadastroModel(@PathVariable Long id){
         cadastroService.deletar(id);
     }
+    @PostMapping("/login")
     public String login (@RequestBody CadastroModel cadastroModel){
         Optional<CadastroModel> usuarioAutenticado = cadastroService.autenticar(cadastroModel.getEmail(),cadastroModel.getSenha());
         if (usuarioAutenticado.isPresent()){
