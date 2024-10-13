@@ -1,18 +1,19 @@
-FROM ubuntu:latest AS build
-
-RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk maven
-
-COPY . .
-
+# Fase 1: Build
+FROM maven:3.9.7-amazoncorretto-17 AS build
+WORKDIR /CorraAgil
+COPY pom.xml .
+RUN mvn dependency:resolve
+COPY src ./src
 RUN mvn clean install
 
-FROM openjdk:17-jdk-slim
-WORKDIR /app
+# Fase 2: Runtime
+FROM amazoncorretto:17-alpine3.17
+LABEL MAINTAINER="CORRA AGIL"
+ENV PORT=8080
+WORKDIR /usr/src/app
+RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+COPY --from=build /CorraAgil/target/*.jar /usr/src/app/api.jar
 
-# Copiar o arquivo JAR gerado para a imagem final
-COPY --from=build target/CorraAgil-0.0.1-SNAPSHOT.jar /app.jar
-EXPOSE 8080
-# Comando para rodar o aplicativo
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Dfile.encoding=UTF-8", "-jar", "/usr/src/app/api.jar", "--server.port=${PORT}"]
 
+EXPOSE ${PORT}
