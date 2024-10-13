@@ -14,9 +14,19 @@
 	<name>CorraAgil</name>
 	<description>App de monitoramento de corrida </description>
 	<properties>
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
 		<java.version>17</java.version>
 		<dozer.version>7.0.0</dozer.version>
 	</properties>
+	<distributionManagement>
+		<repository>
+			<id>CorraAgil</id>
+			<url>https://corraagil.onrender.com</url>
+		</repository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

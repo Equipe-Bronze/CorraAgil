@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -134,42 +133,6 @@ public class AutenticationController {
         // Return do Token com validação de 2h para usuário Logado e autenticado acessar app
         return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
     }
-
-//    @PostMapping(value = "/register",
-//            consumes = MediaType.APPLICATION_JSON_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> register(@RequestBody @Valid DadosCadastroDTO dadosRegisterRequestDTO) {
-//
-//        // Verificação se o email (login) está cadastrado
-//        Optional<UserDetails> entityModel = Optional.ofNullable(repository.findByLogin(dadosRegisterRequestDTO.login()));
-//
-//        if (entityModel.isEmpty()) {
-//            System.out.println(entityModel);
-//            // Novo Usuário
-//            UsuarioModel newEntity = new UsuarioModel();
-//
-//            // Hash da senha usando BCryptPasswordEncoder
-//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//            String encodedPassword = passwordEncoder.encode(dadosRegisterRequestDTO.senha());
-//
-//            newEntity.setSenha(encodedPassword);
-//            newEntity.setLogin(dadosRegisterRequestDTO.login()); // Presumindo que o login é o email
-//            newEntity.setNomecompleto(dadosRegisterRequestDTO.nomecompleto());
-//
-//            // Salvar novo usuário no banco de dados
-//            repository.save(newEntity);
-//
-//            // Opcionalmente, gerar um token JWT após o registro, se necessário
-//            String tokenJWT = tokenService.generateToken(newEntity);
-//
-//            // Retornar o token JWT
-//            return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
-//        } else {
-//            // Retornar uma resposta indicando que o usuário já está registrado
-//            return ResponseEntity.status(HttpStatus.CONFLICT)
-//                    .body("Usuário já está registrado com este login.");
-//        }
-//    }
 
     @PostMapping(value = "/register",
             consumes = MediaType.APPLICATION_JSON_VALUE,
