@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "Cadastro")
 public class CadastroModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nomeCompleto;
     private String email;
@@ -18,9 +18,12 @@ public class CadastroModel {
         this.email = email;
         this.senha = senha;
     }
+    public CadastroModel() {}
 
-    public CadastroModel() {
-    }
+
+    public Long getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
 
     public String getNomeCompleto() {
         return nomeCompleto;
