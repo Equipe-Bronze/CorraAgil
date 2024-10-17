@@ -15,6 +15,9 @@ public class CadastroController {
     @Autowired
     private CadastroService cadastroService;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping("/todos")
     public List<CadastroModel> getAllCadastroModel() {
         return cadastroService.listarTodos();
@@ -30,6 +33,8 @@ public class CadastroController {
     @PostMapping
     public ResponseEntity<CadastroModel> createCadastroModel(@RequestBody CadastroModel cadastroModel) {
         CadastroModel savedCadastro = cadastroService.salvar(cadastroModel);
+        emailService.sendConfirmationEmail(cadastroModel.getEmail(), "Confirmação de Cadastro", "Obrigado por se cadastrar!");
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCadastro);
     }
 
