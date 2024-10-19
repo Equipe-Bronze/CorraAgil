@@ -56,8 +56,8 @@ public class CadastroController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody CadastroModel cadastroModel) {
-        Optional<CadastroModel> usuarioAutenticado = cadastroService.autenticar(cadastroModel.getEmail(), cadastroModel.getSenha());
-        if (usuarioAutenticado.isPresent()) {
+        CadastroModel usuarioAutenticado = cadastroService.autenticar(cadastroModel.getEmail(), cadastroModel.getSenha());
+        if (usuarioAutenticado != null) {
             return ResponseEntity.ok("Login bem-sucedido!");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha no login. Verifique suas credenciais.");

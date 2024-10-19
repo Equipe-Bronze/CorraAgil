@@ -37,8 +37,12 @@ public class CadastroService {
         cadastroRepository.deleteById(id);
     }
 
-    public Optional<CadastroModel> autenticar(String email, String senha) {
-        return cadastroRepository.findByEmail(email).filter(cadastro -> cadastro.getSenha().equals(senha));
+    public CadastroModel autenticar(String email, String senha) {
+        CadastroModel cadastro = cadastroRepository.findByEmail(email);
+        if (cadastro != null && cadastro.getSenha().equals(senha)) {
+            return cadastro;
+        }
+        return null;
     }
 
     public void atualizarSenha(Long id, String novaSenha) throws CadastroNotFoundException {
@@ -48,7 +52,7 @@ public class CadastroService {
         cadastroRepository.save(cadastro);
     }
 
-    public Optional<CadastroModel> buscarPorEmail(String email) {
+    public CadastroModel buscarPorEmail(String email) {
         return cadastroRepository.findByEmail(email);
     }
 
