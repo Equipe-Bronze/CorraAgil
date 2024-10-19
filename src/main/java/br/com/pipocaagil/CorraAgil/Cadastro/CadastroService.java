@@ -40,4 +40,16 @@ public class CadastroService {
     public Optional<CadastroModel> autenticar(String email, String senha) {
         return cadastroRepository.findByEmail(email).filter(cadastro -> cadastro.getSenha().equals(senha));
     }
+
+    public void atualizarSenha(Long id, String novaSenha) throws CadastroNotFoundException {
+        CadastroModel cadastro = cadastroRepository.findById(id)
+                .orElseThrow(() -> new CadastroNotFoundException("Cadastro não encontrado"));
+        cadastro.setSenha(novaSenha);
+        cadastroRepository.save(cadastro);
+    }
+
+    public Optional<CadastroModel> buscarPorEmail(String email) {
+        return cadastroRepository.findByEmail(email);
+    }
+
 }

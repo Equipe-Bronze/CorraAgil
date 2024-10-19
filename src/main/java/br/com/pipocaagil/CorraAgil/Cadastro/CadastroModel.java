@@ -3,7 +3,6 @@ package br.com.pipocaagil.CorraAgil.Cadastro;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Cadastro")
 public class CadastroModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

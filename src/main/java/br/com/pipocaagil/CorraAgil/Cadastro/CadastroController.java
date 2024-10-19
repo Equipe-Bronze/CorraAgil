@@ -62,5 +62,18 @@ public class CadastroController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha no login. Verifique suas credenciais.");
         }
+
     }
+    @PutMapping("/{id}/reset")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody String novaSenha) {
+        try {
+            cadastroService.atualizarSenha(id, novaSenha);
+            return ResponseEntity.ok().build();
+        } catch (CadastroNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
+
+
