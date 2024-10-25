@@ -1,4 +1,4 @@
-package br.com.pipocaagil.CorraAgil;
+package br.com.pipocaagil.corraagil;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

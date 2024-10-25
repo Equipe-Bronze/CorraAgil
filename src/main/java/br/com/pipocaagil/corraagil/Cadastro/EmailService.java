@@ -1,4 +1,4 @@
-package br.com.pipocaagil.CorraAgil.Cadastro;
+package br.com.pipocaagil.corraagil.Cadastro;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

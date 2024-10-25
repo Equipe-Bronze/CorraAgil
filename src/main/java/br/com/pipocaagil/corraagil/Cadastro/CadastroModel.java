@@ -1,4 +1,4 @@
-package br.com.pipocaagil.CorraAgil.Cadastro;
+package br.com.pipocaagil.corraagil.Cadastro;
 
 import jakarta.persistence.*;
 

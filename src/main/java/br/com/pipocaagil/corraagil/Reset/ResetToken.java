@@ -1,6 +1,6 @@
-package br.com.pipocaagil.CorraAgil.Reset;
+package br.com.pipocaagil.corraagil.Reset;
 
-import br.com.pipocaagil.CorraAgil.Cadastro.CadastroModel;
+import br.com.pipocaagil.corraagil.Cadastro.CadastroModel;
 import jakarta.persistence.*;
 
 import java.util.Calendar;

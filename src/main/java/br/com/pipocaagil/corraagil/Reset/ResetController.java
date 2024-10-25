@@ -1,7 +1,7 @@
-package br.com.pipocaagil.CorraAgil.Reset;
+package br.com.pipocaagil.corraagil.Reset;
 
-import br.com.pipocaagil.CorraAgil.Cadastro.CadastroModel;
-import br.com.pipocaagil.CorraAgil.Cadastro.CadastroRepository;
+import br.com.pipocaagil.corraagil.Cadastro.CadastroModel;
+import br.com.pipocaagil.corraagil.Cadastro.CadastroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
