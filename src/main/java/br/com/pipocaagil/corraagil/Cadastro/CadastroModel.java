@@ -1,6 +1,8 @@
 package br.com.pipocaagil.corraagil.Cadastro;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class CadastroModel {
@@ -8,7 +10,10 @@ public class CadastroModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nomeCompleto;
+    @Email
     private String email;
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$",
+            message = "A senha deve ter no mínimo 8 caracteres, pelo menos um caractere especial e uma letra maiúscula.")
     private String senha;
 
     public CadastroModel(Long id, String nomeCompleto, String email, String senha) {

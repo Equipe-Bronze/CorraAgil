@@ -56,4 +56,8 @@ public class CadastroService {
         return cadastroRepository.findByEmail(email);
     }
 
+    public boolean emailJaCadastrado(String email) {
+        return cadastroRepository.findByEmail(email) != null;
+    }
+
 }

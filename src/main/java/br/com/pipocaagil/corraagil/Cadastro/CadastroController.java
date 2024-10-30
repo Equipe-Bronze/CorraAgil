@@ -1,5 +1,6 @@
 package br.com.pipocaagil.corraagil.Cadastro;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,15 +31,18 @@ public class CadastroController {
     }
 
     @PostMapping
-    public ResponseEntity<CadastroModel> createCadastroModel(@RequestBody CadastroModel cadastroModel) {
+    public ResponseEntity<String> createCadastroModel(@Valid @RequestBody CadastroModel cadastroModel) {
+        if (cadastroService.emailJaCadastrado(cadastroModel.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuário já cadastrado com este email.");
+        }
         CadastroModel savedCadastro = cadastroService.salvar(cadastroModel);
         emailService.sendConfirmationEmail(cadastroModel.getEmail(), "Confirmação de Cadastro", "Obrigado por se cadastrar!");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCadastro);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Cadastro realizado com sucesso!");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CadastroModel> atualizar(@PathVariable Long id, @RequestBody CadastroModel cadastroModel) {
+    public ResponseEntity<CadastroModel> atualizar(@PathVariable Long id,@Valid @RequestBody CadastroModel cadastroModel) {
         try {
             CadastroModel updatedCadastro = cadastroService.atualizar(id, cadastroModel);
             return ResponseEntity.ok(updatedCadastro);
