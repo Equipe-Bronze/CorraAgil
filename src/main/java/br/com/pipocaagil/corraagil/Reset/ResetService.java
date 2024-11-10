@@ -24,7 +24,7 @@ public class ResetService {
     }
 
     public void ResetTokenEmail(String email, String token){
-        String url = "http://localhost:8080/resetPassword?token=" + token;
+        String url = "https://corraagil.onrender.com/resetPassword?token=" + token;
         SimpleMailMessage emailMessage = new SimpleMailMessage();
         emailMessage.setTo(email);
         emailMessage.setSubject("Reset de Senha");
