@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/")
@@ -20,6 +20,11 @@ public class ResetController {
     @Autowired
     private ResetTokenRepository resetTokenRepository;
 
+    private String gerarToken() {
+        Random random = new Random();
+        return String.format("%04d", random.nextInt(10000)); // Gera um token de 4 dígitos
+    }
+
     @PostMapping("/resetSenha")
     public ResponseEntity<String> resetSenha(@RequestBody Map<String, String> request) {
         String email = request.get("email");
@@ -27,10 +32,10 @@ public class ResetController {
         if (cadastroModel == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
-        String token = UUID.randomUUID().toString();
+        String token = gerarToken(); // Gera um token de 4 dígitos
         resetService.createResetTokenForCadastro(cadastroModel, token);
         resetService.ResetTokenEmail(email, token);
-        return ResponseEntity.ok("Link de reset de senha enviado para o e-mail");
+        return ResponseEntity.ok("Token de reset de senha enviado para o e-mail");
     }
 
     @PostMapping("/saveSenha")
@@ -38,12 +43,13 @@ public class ResetController {
         String token = request.get("token");
         String senha = request.get("senha");
         ResetToken resetToken = resetTokenRepository.findByToken(token);
-        if (resetToken == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Token inválido");
+        if (resetToken == null || !resetToken.isTokenValido()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado");
         }
         CadastroModel user = resetToken.getCadastroModel();
         user.setSenha(senha); // Considere criptografar a senha aqui
         cadastroRepository.save(user);
+        resetTokenRepository.delete(resetToken); // Remove o token após o uso
         return ResponseEntity.ok("Senha alterada com sucesso");
     }
 }
