@@ -26,15 +26,29 @@ public class ResetController {
     }
 
     @PostMapping("/resetSenha")
-    public ResponseEntity<String> resetSenha(@RequestBody Map<String, String> request) {
+    public ResponseEntity resetSenha(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         CadastroModel cadastroModel = cadastroRepository.findByEmail(email);
+
         if (cadastroModel == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
-        String token = gerarToken(); // Gera um token de 4 dígitos
-        resetService.createResetTokenForCadastro(cadastroModel, token);
-        resetService.ResetTokenEmail(email, token);
+
+        // Verifica se já existe um token associado ao usuário
+        ResetToken existingToken = resetService.findTokenByCadastro(cadastroModel);
+
+        if (existingToken != null) {
+            // Se o token existir e estiver expirado, deleta do banco
+            if (!existingToken.isTokenValido()) {
+                resetService.deletarToken(existingToken);
+            }
+        }
+
+        // Gera um novo token
+        String newToken = gerarToken(); // Gera um token de 4 dígitos
+        resetService.createResetTokenForCadastro(cadastroModel, newToken);
+        resetService.ResetTokenEmail(email, newToken);
+
         return ResponseEntity.ok("Token de reset de senha enviado para o e-mail");
     }
 
@@ -52,4 +66,5 @@ public class ResetController {
         resetTokenRepository.delete(resetToken); // Remove o token após o uso
         return ResponseEntity.ok("Senha alterada com sucesso");
     }
+
 }

@@ -44,4 +44,11 @@ public class ResetService {
                 "\n\nEste token é válido por 20 minutos.");
         mailSender.send(emailMessage);
     }
+    public ResetToken findTokenByCadastro(CadastroModel cadastroModel) {
+        return resetTokenRepository.findByCadastroModel(cadastroModel);
+    }
+
+    public void deletarToken(ResetToken token) {
+        resetTokenRepository.delete(token);
+    }
 }

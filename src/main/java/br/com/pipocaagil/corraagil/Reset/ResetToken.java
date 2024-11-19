@@ -11,7 +11,7 @@ public class ResetToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
-    @OneToOne(targetEntity = CadastroModel.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = CadastroModel.class, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "cadastro_id")
     private CadastroModel cadastroModel;
     private Date expiryDate;
