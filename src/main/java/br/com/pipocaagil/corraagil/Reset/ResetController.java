@@ -52,17 +52,35 @@ public class ResetController {
         return ResponseEntity.ok("Token de reset de senha enviado para o e-mail");
     }
 
+    @PostMapping("/verificaToken")
+    public ResponseEntity<String> verificaToken(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
+        ResetToken resetToken = resetTokenRepository.findByToken(token);
+
+        if (resetToken == null || !resetToken.isTokenValido()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado");
+        }
+
+        // Se o token for válido, retorna o ID do usuário ou outra informação necessária
+        return ResponseEntity.ok("Token válido");
+    }
+
     @PostMapping("/saveSenha")
     public ResponseEntity<String> saveSenha(@RequestBody Map<String, String> request) {
         String token = request.get("token");
         String senha = request.get("senha");
+
+        // Busca o token no banco de dados
         ResetToken resetToken = resetTokenRepository.findByToken(token);
-        if (resetToken == null || !resetToken.isTokenValido()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado");
+
+        // Se o token não existir, retorna uma mensagem de erro
+        if (resetToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou não encontrado");
         }
+        // Recupera o usuário associado ao token
         CadastroModel user = resetToken.getCadastroModel();
-        user.setSenha(senha); // Considere criptografar a senha aqui
-        cadastroRepository.save(user);
+        user.setSenha(senha);
+        cadastroRepository.save(user); // Salva a nova senha
         resetTokenRepository.delete(resetToken); // Remove o token após o uso
         return ResponseEntity.ok("Senha alterada com sucesso");
     }
