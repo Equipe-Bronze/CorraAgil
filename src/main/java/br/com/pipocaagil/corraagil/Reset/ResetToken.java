@@ -11,7 +11,7 @@ public class ResetToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
-    @OneToOne(targetEntity = CadastroModel.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = CadastroModel.class, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "cadastro_id")
     private CadastroModel cadastroModel;
     private Date expiryDate;
@@ -21,7 +21,7 @@ public class ResetToken {
     public ResetToken(String token, CadastroModel cadastroModel) {
         this.token = token;
         this.cadastroModel = cadastroModel;
-        this.expiryDate = calculateExpiryDate(2 * 60); // Exemplo de 2 horas de validade
+        this.expiryDate = calculateExpiryDate(2 * 10); // Exemplo de 20 minutos de validade
     }
 
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
@@ -29,6 +29,9 @@ public class ResetToken {
         calendar.setTime(new Date());
         calendar.add(Calendar.MINUTE, expiryTimeInMinutes);
         return calendar.getTime();
+    }
+    public boolean isTokenValido() {
+        return new Date().before(expiryDate); // Verifica se a data atual é antes da data de expiração
     }
 
 

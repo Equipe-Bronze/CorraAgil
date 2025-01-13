@@ -7,6 +7,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class ResetService {
     @Autowired
@@ -16,19 +18,37 @@ public class ResetService {
     @Autowired
     private JavaMailSender mailSender;
 
-
-    public void createResetTokenForCadastro(CadastroModel cadastroModel, String token){
-        ResetToken myToken = new ResetToken(token,cadastroModel);
-        resetTokenRepository.save(myToken);
+    // Método para gerar um token de 4 dígitos
+    private String gerarToken() {
+        Random random = new Random();
+        return String.format("%04d", random.nextInt(10000)); // Gera um token de 4 dígitos
 
     }
 
-    public void ResetTokenEmail(String email, String token){
-        String url = "http://localhost:8080/resetPassword?token=" + token;
+    public void createResetTokenForCadastro(CadastroModel cadastroModel, String token) {
+        ResetToken myToken = new ResetToken(token, cadastroModel);
+        resetTokenRepository.save(myToken);
+    }
+
+    public void createResetTokenForCadastro(CadastroModel cadastroModel) {
+        String token = gerarToken();
+        ResetToken myToken = new ResetToken(token, cadastroModel);
+        resetTokenRepository.save(myToken);
+    }
+
+    public void ResetTokenEmail(String email, String token) {
         SimpleMailMessage emailMessage = new SimpleMailMessage();
         emailMessage.setTo(email);
         emailMessage.setSubject("Reset de Senha");
-        emailMessage.setText("Para resetar sua senha, clique no link abaixo:\n" + url);
+        emailMessage.setText("Seu token de reset de senha é: " + token +
+                "\n\nEste token é válido por 20 minutos.");
         mailSender.send(emailMessage);
+    }
+    public ResetToken findTokenByCadastro(CadastroModel cadastroModel) {
+        return resetTokenRepository.findByCadastroModel(cadastroModel);
+    }
+
+    public void deletarToken(ResetToken token) {
+        resetTokenRepository.delete(token);
     }
 }
